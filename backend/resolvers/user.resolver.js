@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 
 const userResolver = {
   Mutation: {
-    signup: async (_, { input }, context) => {
+    signUp: async (_, { input }, context) => {
       try {
         const { username, name, password, gender } = input;
 
@@ -71,12 +71,26 @@ const userResolver = {
     },
   },
   Query: {
-    
-    user: (_, { userId }) => {
-      return users.find((user) => user._id === userId);
+    authUser: async(_, context) => {
+      try {
+        const user = await context.getUser()
+        return user;
+      } catch (err) {
+        console.error("Error in authUser: ", err);
+        throw new Error("Internal Server Error")
+      }
+    },
+    user: async (_, { userId }) => {
+      try {
+        const user = await User.findById(userId);
+        return user
+      } catch (err) {
+        console.error("Error in user query:", err);
+        throw new Error(err.message || "Error gerring user")
+      }
     },
   },
-  Mutation: {},
+// TODO => ADD USER/TRANSACATION RELATION
 };
 
 export default userResolver;
