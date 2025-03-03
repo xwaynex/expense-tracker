@@ -3,11 +3,11 @@ type Transaction {
   _id: ID!
   userId: ID!
   description: String!
-  paymentTYpe: String!
+  paymentType: String!
   category: String!
-  amoount: Float!
+  amount: Float!
   location: String!
-  data: String!
+  date: String!
 }
 
 type Query {
@@ -24,7 +24,7 @@ type Mutation {
 
 input CreateTransactionInput {
   description: String!
-  paymentTYpe: String!
+  paymentType: String!
   category: String!
   amount: Float!
   date: String!
@@ -34,7 +34,7 @@ input CreateTransactionInput {
 input UpdateTransactionInput {
   transactionId: ID!
   description: String
-  paymentTYpe: String
+  paymentType: String
   category: String
   amount: Float
   date: String 
