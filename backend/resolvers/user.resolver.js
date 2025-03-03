@@ -43,6 +43,7 @@ const userResolver = {
     login: async (_, { input }, context) => {
       try {
         const { username, password } = input;
+        if(!username || !password) throw new Error("All fields are required");
         const { user } = await context.authenticate("graphql-local", {
           username,
           password,
@@ -56,13 +57,13 @@ const userResolver = {
       }
     },
 
-    logout: async (_, context) => {
+    logout: async (_,__,context) => {
       try {
         await context.logout();
-        req.session.destroy((err) => {
+        context.req.session.destroy((err) => {
           if (err) throw err;
         });
-        res.clearCookie("connect.sid");
+        context.res.clearCookie("connect.sid");
         return { message: "Logged out successfully " };
       } catch (err) {
         console.error("Error in login:", err);
@@ -71,26 +72,26 @@ const userResolver = {
     },
   },
   Query: {
-    authUser: async(_, context) => {
+    authUser: async (_, __, context) => {
       try {
-        const user = await context.getUser()
+        const user = await context.getUser();
         return user;
       } catch (err) {
         console.error("Error in authUser: ", err);
-        throw new Error("Internal Server Error")
+        throw new Error("Internal Server Error");
       }
     },
     user: async (_, { userId }) => {
       try {
         const user = await User.findById(userId);
-        return user
+        return user;
       } catch (err) {
         console.error("Error in user query:", err);
-        throw new Error(err.message || "Error gerring user")
+        throw new Error(err.message || "Error gerring user");
       }
     },
   },
-// TODO => ADD USER/TRANSACATION RELATION
+  // TODO => ADD USER/TRANSACATION RELATION
 };
 
 export default userResolver;
