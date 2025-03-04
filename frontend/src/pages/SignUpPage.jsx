@@ -39,11 +39,13 @@ const SignUpPage = () => {
     try {
       if (
         !signUpData.username ||
-        signUpData.name ||
+        !signUpData.name ||
         !signUpData.password ||
         !signUpData.gender
-      )
+      ) {
         return toast.error("Please fill in all fields");
+      }
+
       await signup({
         variables: {
           input: signUpData,
