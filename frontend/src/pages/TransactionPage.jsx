@@ -12,10 +12,12 @@ const TransactionPage = () => {
   const { loading, data } = useQuery(GET_TRANSACTION, {
     variables: { id: id },
   });
+
+
   const [updateTransaction, { loading: updateLoading }] = useMutation(
     UPDATE_TRANSACTION,
     {
-      refetchQueries: ["GetTransaction"],
+      refetchQueries: ["GetTransaction", "GetTransactionStatistics"],
     }
   );
 
@@ -38,7 +40,7 @@ const TransactionPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const amount = parseFloat(formData.amount); //convert amunt to number by default input fields return string
+    const amount = parseFloat(formData.amount); //convert amount to number by default input fields return string
     try {
       await updateTransaction({
         variables: { input: { ...formData, amount, transactionId: id } },
