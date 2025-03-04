@@ -57,8 +57,8 @@ const HomePage = () => {
 
   useEffect(() => {
     if (data?.categoryStatistics) {
-      const categories = data.categoryStatistics.map((stat) => stat.category);
-      const totalAmounts = data.categoryStatistics.map((stat) => stat.totalAmount);
+      const categories = data?.categoryStatistics.map((stat) => stat.category);
+      const totalAmounts = data?.categoryStatistics.map((stat) => stat.totalAmount);
 
       const backgroundColors = [];
       const borderColors = [];
@@ -125,7 +125,7 @@ const HomePage = () => {
           )}
         </div>
         <div className="flex flex-wrap w-full justify-center items-center gap-6">
-          {data.categoryStatistics.length > 0 && (
+          {data?.categoryStatistics.length > 0 && (
           <div className="h-[330px] w-[330px] md:h-[360px] md:w-[360px]  ">
             <Doughnut data={chartData} />
           </div>

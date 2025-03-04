@@ -2,6 +2,7 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 
 import passport from 'passport';
 import session from 'express-session';
@@ -19,6 +20,8 @@ import mergedTypeDefs from './typeDef/index.js';
 
 dotenv.config()
 configurePassport()
+
+const __dirname = path.resolve()
 const app = express();
 
 const httpServer = http.createServer(app);
@@ -35,10 +38,10 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false, // this option specifies whether to save session on to the store on every request
-    saveUninitialized: false, // option specifies wheather to save uninitialized sessions
+    saveUninitialized: false, // option specifies weather to save uninitialized sessions
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true, // this option prevrents Cross-Site Scripting (XSS) attacks  
+      httpOnly: true, // this option prevents Cross-Site Scripting (XSS) attacks  
     },
     store:store
   })
@@ -68,6 +71,13 @@ app.use(
     context: async ({ req, res }) => buildContext({req, res}),
   }),
 );
+
+//npm run build will build your frontend app and put in the dist directory
+app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+app.get("*", (req,res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist", "index.html"))
+})
 
 // Modified server startup
 await new Promise ((resolve) =>
