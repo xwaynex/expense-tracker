@@ -14,12 +14,14 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { connectDB } from './db/connectDB.js';
 import { buildContext  } from 'graphql-passport';
 import { configurePassport } from './passport/passport.config.js';
+import job from './cron.js';
 
 import mergedResolvers from './resolvers/index.js';
 import mergedTypeDefs from './typeDef/index.js';
 
 dotenv.config()
 configurePassport()
+job.start();
 
 const __dirname = path.resolve()
 const app = express();

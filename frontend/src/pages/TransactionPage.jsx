@@ -16,6 +16,7 @@ const TransactionPage = () => {
 
   const [updateTransaction, { loading: updateLoading }] = useMutation(
     UPDATE_TRANSACTION,
+    //TODO: Refetching stats after update not working
     {
       refetchQueries: [{query: GET_TRANSACTION_STATISTICS}],
     }
